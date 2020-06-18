@@ -45,5 +45,20 @@ public class UsuarioService implements IUsuarioService{
 	public void delete(int id) {
 		data.deleteById(id);
 	}
+	
+	public Usuario find(String u,String c) {
+		
+		List<Usuario> lu=this.listar();
+		for (Usuario usuario : lu) {
+			if(usuario.getUsuario().equals(u) && usuario.getClave().equals(c)) {
+				return usuario;
+			}
+		}
+		return null;
+		
+	}
+	public String findEmpresa(Usuario u) {
+		return u.getEmpresa().getNombre();
+	}
 
 }

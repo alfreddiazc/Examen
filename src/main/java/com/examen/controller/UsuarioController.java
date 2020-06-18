@@ -4,6 +4,8 @@ package com.examen.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.examen.Service.UsuarioService;
 import com.examen.interfaceService.IUsuarioService;
 import com.examen.modelo.Usuario;
 
@@ -22,7 +25,10 @@ import com.examen.modelo.Usuario;
 public class UsuarioController {
     @Autowired
 	private IUsuarioService service; 
+    
+    private UsuarioService us;
 	
+    
     @GetMapping("/listar")
 	public String listar (Model model) {
 		List<Usuario> usuario=service.listar();
@@ -31,7 +37,8 @@ public class UsuarioController {
 	}
     
     @GetMapping("/")
-   	public String listar2 (Model model) {
+   	public String inicio (Model model) {
+    	model.addAttribute("usuario", new Usuario());
    		return "Login";
    	}
     @GetMapping("/registro")
@@ -40,9 +47,11 @@ public class UsuarioController {
    		return "Registro";
    	}
     @PostMapping("/login")
-    public String home(Model model) {
-    	List<Usuario> usuario=service.listar();
-		model.addAttribute("usuario",usuario);
+    public String home(Model model,HttpServletRequest request) {
+    	String u=request.getParameter("u");
+    	String c=request.getParameter("p");
+    	Usuario usuer=us.find(u, c);
+    	if(usuer == null) {return "Error";}
     	return "home";
     }
     
