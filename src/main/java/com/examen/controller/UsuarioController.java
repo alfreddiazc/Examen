@@ -36,13 +36,14 @@ public class UsuarioController {
    	}
     @GetMapping("/registro")
    	public String registrar (Model model) {
+    	model.addAttribute("usuario", new Usuario());
    		return "Registro";
    	}
-   
-    @GetMapping("/new")
-    public String agregar(Model model) {
-    	model.addAttribute("usuario", new Usuario());
-    	return "Form";
+    @PostMapping("/login")
+    public String home(Model model) {
+    	List<Usuario> usuario=service.listar();
+		model.addAttribute("usuario",usuario);
+    	return "home";
     }
     
     @PostMapping("/save")
